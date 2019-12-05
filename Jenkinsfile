@@ -48,5 +48,20 @@ pipeline {
                 //implement Kubernetes deployment here
             }
         }
+        
+        stage('DeployToProduction') {
+            when {
+                branch 'master'
+            }
+            steps {
+                input 'Deploy to Production?'
+                milestone(1)
+                kubernetesDeploy(
+                    kubeconfigId: 'db2b8cf4-0575-48c6-bd5f-5f70a5b35c86',
+                    configs: './data/train-schedule-kube.yml',
+                    enableConfigSubstitution: true
+                )
+            }
+        }
     }
 }
